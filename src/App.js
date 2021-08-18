@@ -3,6 +3,15 @@ import logo from './logo.svg';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 
+//document
+import { Form } from './components/document/eventHandling';
+import { Toggle } from './components/document/eventHandling';
+import { LoginControl } from './components/document/conditionalRender';
+import { WarningBanner } from './components/document/conditionalRender';
+import { Mailbox } from './components/document/conditionalRender';
+import { NumberList } from './components/document/listAndKey';
+import { Blog } from './components/document/listAndKey';
+
 const useStyles = makeStyles({
   //camelCase
   app: {
@@ -36,125 +45,18 @@ const useStyles = makeStyles({
   },
   smallSpace: {
     display: 'block',
-    margin: '20px'
+    width: '40vmin',
+    margin: '20px auto'
   }
 });
 
-//イベント処理
-//form 要素のデフォルト動作停止
-//eは合成(synthetic)イベント
-function Form(props) {
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('You clicked submit.');
-  }
-
-  return (
-    <div className={props.space}>
-      <form onSubmit={handleSubmit}>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  );
-}
-
-//on/off toggle
-class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {isToggleOn: true};
-
-    //JSではクラスのメソッドはデフォルトでバインドされないので、
-    //( handleClick() {} )で書くときに、
-    //<button onClick={this.handleClick}>としたい時はバインドする必要がある。
-    //this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick = () => {
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn
-    }));
-  }
-  render() {
-    return (
-      <div className={this.props.space}>
-        <button onClick={this.handleClick}>
-          {this.state.isToggleOn ? 'ON' : 'OFF'}
-        </button>
-      </div>
-    )
-  }
-}
-
-//条件付きレンダー
-function UserGreeting() {
-  return <h1>Welcome back!</h1>;
-}
-function GuestGreeting() {
-  return <h1>Please sign up.</h1>;
-}
-
-function Greeting(props) {
-  const isLoggedIn = props.isLoggedIn;
-  if (isLoggedIn) {
-    return <UserGreeting />;
-  }
-  return <GuestGreeting />;
-}
-
-//要素変数、要素を保存しておくために変数を用いる
-function LoginButton(props) {
-  return (
-    <button onClick={props.onClick}>
-      Login
-    </button>
-  )
-}
-
-function LogoutButton(props) {
-  return (
-    <button onClick={props.onClick}>
-      Logout
-    </button>
-  )
-}
-
-class LoginControl extends React.Component {
-  constructor(props) {
-    super(props);
-    //bind
-    this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
-
-    this.state = {isLoggedIn: false}
-  }
-
-  handleLoginClick() {
-    this.setState({isLoggedIn: true});
-  }
-
-  handleLogoutClick() {
-    this.setState({isLoggedIn: false});
-  }
-
-  render() {
-    const isLoggedIn = this.state.isLoggedIn;
-    let button;
-    if (isLoggedIn) {
-      button = <LogoutButton onClick={this.handleLogoutClick} />;
-    } else {
-      button = <LoginButton onClick={this.handleLoginClick} />;
-    }
-
-    return(
-      <div>
-        <Greeting isLoggedIn={isLoggedIn} />
-        {button}
-      </div>
-    );
-  }
-}
-
+//datas
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+];
+const numbers = [1, 2, 3, 4, 5];
+const messages = ['React', 'Re: React', 'Re:Re: React'];
 
 function App() {
   const classes = useStyles();
@@ -176,6 +78,10 @@ function App() {
         <Form space={classes.smallSpace}/>
         <Toggle space={classes.smallSpace}/>
         <LoginControl />
+        <Mailbox unreadMessages={messages} />
+        <WarningBanner warn={false} />
+        <NumberList numbers={numbers} space={classes.smallSpace} />
+        <Blog posts={posts} space={classes.smallSpace} />,
       </header>
     </div>
   );
