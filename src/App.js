@@ -6,11 +6,17 @@ import React from 'react';
 //document
 import { Form } from './components/document/eventHandling';
 import { Toggle } from './components/document/eventHandling';
+
 import { LoginControl } from './components/document/conditionalRender';
 import { WarningBanner } from './components/document/conditionalRender';
 import { Mailbox } from './components/document/conditionalRender';
+
 import { NumberList } from './components/document/listAndKey';
 import { Blog } from './components/document/listAndKey';
+
+import { NameForm } from './components/document/form';
+
+import { Calculator } from './components/document/stateLiftUp';
 
 const useStyles = makeStyles({
   //camelCase
@@ -81,7 +87,9 @@ function App() {
         <Mailbox unreadMessages={messages} />
         <WarningBanner warn={false} />
         <NumberList numbers={numbers} space={classes.smallSpace} />
-        <Blog posts={posts} space={classes.smallSpace} />,
+        <Blog posts={posts} space={classes.smallSpace} />
+        <NameForm space={classes.smallSpace}/>
+        <Calculator space={classes.smallSpace}/>
       </header>
     </div>
   );
